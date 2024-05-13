@@ -140,7 +140,7 @@ Une fois cette configuration terminée, copiez le fichier vers la deuxième mach
 
 Lancez le cluster avec
 
-`systemctl stop pacemaer && systemctl restart corosync && systemctl start pacemaker`
+`systemctl stop pacemaker && systemctl restart corosync && systemctl start pacemaker`
 
 ### Remarques
 
