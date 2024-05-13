@@ -174,13 +174,21 @@ L'affichage doit être équivalent sur les deux serveurs (le Current DC et la li
 
 `apt install pcs`
 
+### Désactivation du STONITH
+
+Le protocole STONITH permet à un noeud passif de "tuer" le noeud actif lorsqu'il s'active liu-même.
+
+`crm configure property stonith-enabled=false`
+
 ### Ajout d'une VIP
 
 On va configurer un service mis à disposition par le cluste : la VIP (c'st-à-dire l'IP qui va basculer d'un côté à l'autre).
 
-`pcs resource create ClusterIP ocf:heartbeat:IPaddr2 ip=192.168.138.20 cidr_netmask=24 op monitor interval=30s`
+`crm configure primitive ClusterIP ocf:heartbeat:IPaddr2 \
+     params ip=192.168.138.20 cidr_netmask=32 \
+     op monitor interval=30s`
 
-On demande ici à pacemaker de créer un service qui s'appelle ClusterIP, en lui fournissant 192.168.138.20/24 comme adresse, et on lui demande de la surveiller toutes les 30 secondes.
+On demande ici à pacemaker de créer un service qui s'appelle ClusterIP, en lui fournissant 192.168.138.20/32 comme adresse, et on lui demande de la surveiller toutes les 30 secondes.
 
 Plus d'infos : https://github.com/ClusterLabs/pacemaker/blob/main/doc/sphinx/Clusters_from_Scratch/active-passive.rst
 
@@ -205,6 +213,12 @@ Il existe beaucoup d'autres services paramétrables via pacemaker (notamment pro
 Dans le cas d'un cluster actif/actif, il est possible de créer des groupes de services qui doivent tourner sur le même hôte (par exemple, apache et la VIP), et de gérer un ordre de démarrage des ressources (pour apache avant la VIP par exemple).
 
 Plus d'informations : https://github.com/ClusterLabs/pacemaker/blob/main/doc/sphinx/Clusters_from_Scratch/apache.rst
+
+### Lier les deux services entre eux
+
+On a besoin que Apache et la VIP soient sur le même serveur. Pour cela, on va crer une colocation entre les deux :
+
+`crm configure colocation SiteWebEpsi INFINITY: LeSiteWebDuCluster ClusterIP`
 
 ### Vérification que tout est OK
 
