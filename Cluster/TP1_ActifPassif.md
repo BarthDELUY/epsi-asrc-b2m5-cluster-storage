@@ -170,11 +170,15 @@ Online: [ hote1 hote2 ]
 
 L'affichage doit être équivalent sur les deux serveurs (le Current DC et la liste des noeurs Online doivent être identiques).
 
+### Installation de l'outil de paramétrage
+
+`apt install pcs`
+
 ### Ajout d'une VIP
 
 On va configurer un service mis à disposition par le cluste : la VIP (c'st-à-dire l'IP qui va basculer d'un côté à l'autre).
 
-`crm resource create ClusterIP ocf:heartbeat:IPaddr2 ip=192.168.138.20 cidr_netmask=24 op monitor interval=30s`
+`pcs resource create ClusterIP ocf:heartbeat:IPaddr2 ip=192.168.138.20 cidr_netmask=24 op monitor interval=30s`
 
 On demande ici à pacemaker de créer un service qui s'appelle ClusterIP, en lui fournissant 192.168.138.20/24 comme adresse, et on lui demande de la surveiller toutes les 30 secondes.
 
@@ -186,7 +190,7 @@ REMPLACEZ l'IP par l'adresse en .20 qui se trouve sur le *même* réseau que vos
 
 On ajoute un nouveau service au cluster : 
 ```
-crm resource create LeSiteWebDuCluster ocf:heartbeat:apache  \
+pcs resource create LeSiteWebDuCluster ocf:heartbeat:apache  \
       configfile=/etc/apache2/apache2.conf \
       statusurl="http://localhost/server-status" \
       op monitor interval=1min
