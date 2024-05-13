@@ -1,4 +1,4 @@
-# TP1 - Cluster Actif/PAssif
+# TP1 - Cluster Actif/Passif
 
 
 Dans ce TP, nous allons mettre en place un cluster actif/passif de serveurs web, à l'aide des technologies corosync et pacemaker sous Debian.
@@ -68,7 +68,7 @@ Host hote2
 ```
 Ce fichier sert à indiquer à SSH que lorsque root essaie de se connecter à hote2, il faut utiliser la clé privée /root/.ssh/cle_root_1
 5. Affichez la clé *publique* avec `cat /root/.ssh/cle_root_1.pub`
-6. Copiez cette clé vers le fichier /root/.ssh/authoriezd_keys sur la machine 2
+6. Copiez cette clé vers le fichier /root/.ssh/authorized_keys sur la machine 2
 7. Répétez les commandes sur la machine 2
 8. Testez la connexion : `ssh root@hote2` depuis la machine 1 : il doit vous demander d'accepter la clé du serveur (répondez `yes`) mais pas de mot de passe !
 9. Testez la connexion dans l'autre sens, avec le même résultat :-)
