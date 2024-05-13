@@ -29,7 +29,7 @@ iface ens18 inet dhcp
 par
 
 ```
-iface ens18 inet static  
+iface ens33 inet static  
     address VOTRE_ADDRESSE_STATIQUE/24  
     gateway <votre passerelle par défaut>
 ```
@@ -113,7 +113,7 @@ Ouvrez le fichier /etc/corosync/corosync.conf
 
 1. Dans le bloc `totem`, changez le nom du cluster pour `ClusterWebEpsi`
 
-2. Dans le bloc totem > interface, changez l'adresse pour mettre l'adresse de *votre réseau* (pas l'IP de la VM, l'adresse DU RÉSEAU)
+2. ~~Dans le bloc totem > interface, changez l'adresse pour mettre l'adresse de *votre réseau* (pas l'IP de la VM, l'adresse DU RÉSEAU)~~
 
 3. Dans le bloc `quorum`, ajoutez une ligne avec la valeur `two_node: 1 ` car notre cluster ne contiendra que 2 noeuds
 
@@ -121,9 +121,13 @@ Ouvrez le fichier /etc/corosync/corosync.conf
 ```
 nodelist {
         node {
+                name: hote1
+                nodeid: 1
                 ring0_addr: 192.168.138.11
         }
         node {
+                name: hote2
+                nodeid: 2
                 ring0_addr: 192.168.138.12
         }
 }
@@ -136,7 +140,7 @@ Une fois cette configuration terminée, copiez le fichier vers la deuxième mach
 
 Lancez le cluster avec
 
-`systemctl start corosync && systemctl start pacemaker`
+`systemctl stop pacemaer && systemctl restart corosync && systemctl start pacemaker`
 
 ### Remarques
 
